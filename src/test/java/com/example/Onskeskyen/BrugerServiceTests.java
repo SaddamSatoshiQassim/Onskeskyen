@@ -18,7 +18,7 @@ public class BrugerServiceTests {
     @Test
     void opretBruger_opretterOgGemmerBrugerKorrekt() {
         // Arrange
-        String navn = "Anna";
+        String navn = "Jens";
         String email = "anna@mail.com";
         String kodeord = "1234";
 
@@ -30,7 +30,7 @@ public class BrugerServiceTests {
         assertTrue(gemtBruger.isPresent());
 
         Bruger bruger = gemtBruger.get();
-        assertEquals("Anna", bruger.getNavn());
+        assertEquals("Jens", bruger.getNavn());
         assertEquals("anna@mail.com", bruger.getEmail());
         assertEquals("1234", bruger.getKodeord());
     }
