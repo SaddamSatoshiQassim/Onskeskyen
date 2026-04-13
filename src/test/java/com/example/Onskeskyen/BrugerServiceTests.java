@@ -1,6 +1,6 @@
 /*Denne unittest er på om når en bruger opretter sig om det virker og den gemmer data på bruger.
 Dette er en af hovedfunktioner for resten af hjemmsiden, derfor er den testværdi
-        */
+
 
 package com.example.Onskeskyen;
 import com.example.Onskeskyen.models.Bruger;
@@ -38,3 +38,6 @@ public class BrugerServiceTests {
         assertEquals("1234", bruger.getKodeord());
     }
 }
+
+
+ */

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Ønskeskyen</title>
+    <link rel="stylesheet" href="/style.css" th:href="@{/style.css}">
+</head>
+<body>
+<main class="login-page">
+    <section class="box login-box">
+        <h2>Bruger</h2>
+
+        <div class="tabs">
+            <button id="loginTab" type="button" class="active-tab" onclick="showLogin()">Login</button>
+            <button id="createTab" type="button" class="secondary" onclick="showCreate()">Opret</button>
+        </div>
+
+        <p class="error" th:if="${fejl}" th:text="${fejl}"></p>
+
+        <div id="loginForm" class="form active">
+            <form th:action="@{/login}" method="post">
+                <input type="text" name="brugernavn" placeholder="Email" required>
+                <input type="password" name="kodeord" placeholder="Kodeord" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <div id="createForm" class="form">
+            <form th:action="@{/opret}" method="post">
+                <input type="text" name="navn" placeholder="Navn" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="kodeord" placeholder="Kodeord" required>
+                <button type="submit" class="secondary">Opret bruger</button>
+            </form>
+        </div>
+    </section>
+</main>
+
+<script>
+    function showLogin() {
+        document.getElementById("loginForm").classList.add("active");
+        document.getElementById("createForm").classList.remove("active");
+
+        document.getElementById("loginTab").classList.add("active-tab");
+        document.getElementById("loginTab").classList.remove("secondary");
+        document.getElementById("createTab").classList.remove("active-tab");
+        document.getElementById("createTab").classList.add("secondary");
+    }
+
+    function showCreate() {
+        document.getElementById("createForm").classList.add("active");
+        document.getElementById("loginForm").classList.remove("active");
+
+        document.getElementById("createTab").classList.add("active-tab");
+        document.getElementById("createTab").classList.remove("secondary");
+        document.getElementById("loginTab").classList.remove("active-tab");
+        document.getElementById("loginTab").classList.add("secondary");
+    }
+</script>
+</body>
+</html>

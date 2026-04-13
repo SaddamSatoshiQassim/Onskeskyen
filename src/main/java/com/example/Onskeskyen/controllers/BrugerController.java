@@ -16,24 +16,14 @@ public class BrugerController {
       this.services = services;
   }
 
-  @GetMapping("/")
-    public String startside(){
-          return "index";
-  }
-
-  @GetMapping("/index.html")
-    public String startsideHtml() {
-          return "redirect:/";
-  }
+    @GetMapping({"/", "/index"})
+    public String startside() {
+        return "index";
+    }
 
     @GetMapping("/login")
     public String visLogin() {
         return "login";
-    }
-
-    @GetMapping("/login.html")
-    public String visLoginHtml() {
-        return "redirect:/login";
     }
 
     @PostMapping("/login")
