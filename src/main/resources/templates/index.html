@@ -1,27 +1,109 @@
 <!DOCTYPE html>
-<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<html lang="da">
 <head>
+    <header>
+        <div class="top-bar">
+            <h1>Velkommen til Ønskeskyen</h1>
+            <a href="login.html" class="login-btn">Login</a>
+        </div>
+        <p>En enkel og overskuelig hjemmeside</p>
+    </header>
+
     <meta charset="UTF-8">
-    <title>Brugere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ønskeskyen</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        header {
+            background-color: #cfe8e1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav {
+            background-color: #e8f1ef;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #2f5d50;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .box {
+            background-color: white;
+            border: 2px solid #d9e4e1;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .box h2 {
+            margin-top: 0;
+            color: #2f5d50;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #cfe8e1;
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
+<header>
+    <h1>Velkommen til skyen til ønsker</h1>
+</header>
 
-<table>
-    <thead>
-    <tr>
-        <th>Bruger ID</th>
-        <th>Navn</th>
+<nav>
+    <a href="#">Forside</a>
+    <a href="#">Ønsker</a>
+    <a href="#">Om os</a>
+    <a href="#">Kontakt</a>
+</nav>
 
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="bruger : ${brugere}">
-        <td th:text="${bruger.brugerId}"></td>
-        <td th:text="${bruger.navn}"></td>
+<main>
+    <section class="box">
+        <h2>Mine ønsker</h2>
+        <p>Her kan brugeren hurtigt få overblik over sine ønsker.</p>
+    </section>
 
-    </tr>
-    </tbody>
-</table>
+    <section class="box">
+        <h2>Opret nyt ønske</h2>
+        <p>En enkel boks hvor man nemt kan tilføje nye ønsker.</p>
+    </section>
 
+    <section class="box">
+        <h2>Populære ønsker</h2>
+        <p>Viser udvalgte eller ofte brugte ønsker på en enkel måde.</p>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Ønskeskyen</p>
+</footer>
 </body>
 </html>
