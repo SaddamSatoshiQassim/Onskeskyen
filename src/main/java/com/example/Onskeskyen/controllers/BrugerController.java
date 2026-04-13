@@ -19,13 +19,22 @@ public class BrugerController {
 
     @PostMapping("/login")
     public String login(@RequestParam String brugernavn, @RequestParam String kodeord, Model model) {
-        boolean gyldigLogin = true; // her skal du senere kalde din service
+        boolean gyldigLogin = services.godkendLogin(brugernavn, kodeord);
         if (gyldigLogin) {
             return "redirect:/onskeliste";
         } else {
             model.addAttribute("fejl", "Forkert brugernavn eller kodeord");
             return "login";
         }
+    }
+
+    @PostMapping("/opret")
+    public String opretBruger(@RequestParam String navn,
+                              @RequestParam String email,
+                              @RequestParam String kodeord) {
+
+        services.opretBruger(navn, email, kodeord);
+        return "redirect:/";
     }
 
     @GetMapping("/onskeliste")

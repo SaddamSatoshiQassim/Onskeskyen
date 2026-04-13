@@ -1,10 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login / opret</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid white;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: darkgreen;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background-color: green;
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        .secondary {
+            background-color: dodgerblue;
+        }
+
+        .secondary:hover {
+            background-color: cornflowerblue;
+        }
+
+        .secondary:active {
+            transform: scale(0.97);
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .tabs button {
+            margin: 2px;
+        }
+
+        .active-tab {
+            outline: 2px solid black;
+        }
+
+        .form {
+            display: none;
+        }
+
+        .form.active {
+            display: block;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
+
+<div class="box">
+    <h2>Bruger</h2>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button id="loginTab" class="active-tab" onclick="showLogin()">Login</button>
+        <button id="createTab" class="secondary" onclick="showCreate()">Opret</button>
+    </div>
+
+    <!-- Fejl -->
+    <p class="error" th:if="${fejl}" th:text="${fejl}"></p>
+
+    <!-- LOGIN -->
+    <div id="loginForm" class="form active">
+        <form th:action="@{/login}" method="post">
+            <input type="text" name="brugernavn" placeholder="Email" required>
+            <input type="password" name="kodeord" placeholder="Kodeord" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- OPRET -->
+    <div id="createForm" class="form">
+        <form th:action="@{/opret}" method="post">
+            <input type="text" name="navn" placeholder="Navn" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="kodeord" placeholder="Kodeord" required>
+            <button type="submit" class="secondary">Opret bruger</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function showLogin() {
+        document.getElementById("loginForm").classList.add("active");
+        document.getElementById("createForm").classList.remove("active");
+
+        document.getElementById("loginTab").classList.add("active-tab");
+        document.getElementById("createTab").classList.remove("active-tab");
+    }
+
+    function showCreate() {
+        document.getElementById("createForm").classList.add("active");
+        document.getElementById("loginForm").classList.remove("active");
+
+        document.getElementById("createTab").classList.add("active-tab");
+        document.getElementById("loginTab").classList.remove("active-tab");
+    }
+</script>
 
 </body>
 </html>
