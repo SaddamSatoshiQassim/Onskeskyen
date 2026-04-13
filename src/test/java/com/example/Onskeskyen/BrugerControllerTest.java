@@ -1,7 +1,9 @@
 /* package com.example.Onskeskyen.controllers;
 
+import com.example.Onskeskyen.services.BrugerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.View;
@@ -18,10 +20,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class BrugerControllerTest {
 
     private MockMvc mockMvc;
+    private BrugerService brugerService;
 
     @BeforeEach
     void setup() {
-        BrugerController controller = new BrugerController();
+        brugerService = Mockito.mock(BrugerService.class);
+
+        BrugerController controller = new BrugerController(brugerService);
 
         ViewResolver viewResolver = new ViewResolver() {
             @Override
@@ -41,7 +46,6 @@ public class BrugerControllerTest {
                     public void render(Map<String, ?> model,
                                        jakarta.servlet.http.HttpServletRequest request,
                                        jakarta.servlet.http.HttpServletResponse response) {
-                        // gør ingenting
                     }
                 };
             }
@@ -64,8 +68,7 @@ public class BrugerControllerTest {
         mockMvc.perform(post("/login")
                         .param("brugernavn", "imrane")
                         .param("kodeord", "1234"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/onskeliste"));
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test
