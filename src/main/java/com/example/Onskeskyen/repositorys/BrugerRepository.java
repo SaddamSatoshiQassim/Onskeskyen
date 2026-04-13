@@ -1,44 +1,53 @@
 package com.example.Onskeskyen.repositorys;
 
 import com.example.Onskeskyen.models.Bruger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Repository
 public class BrugerRepository {
 
-    private List<Bruger> brugere = new ArrayList<>();
-    private int nextId = 1;
+    private String dbUrl = "jdbc:mysql://localhost:3306/Onskeskyen";
+    private String username = "root";
+    private String password = "root12341";
 
-    //Gem bruger
-    public Bruger save(Bruger bruger){
-        if(bruger.getBrugerId() == 0){
-            bruger.setBrugerId(nextId++);
-            brugere.add(bruger);
-        } else {
-            //opdater eksisterende bruger
-            for (int i = 0; i < brugere.size(); i++){
-                if(brugere.get(i).getBrugerId() == bruger.getBrugerId()) {
-                    brugere.set(i, bruger);
-                    break;
+    public List<Bruger> findAll() {
+        List<Bruger> brugere = new ArrayList<>();
+        String sql = "SELECT * FROM bruger";
+
+        try (Connection connection = DriverManager.getConnection(dbUrl, username, password);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+
+            while (resultSet.next()) {
+
+                Timestamp ts = resultSet.getTimestamp("dato");
+                LocalDateTime dato = null;
+
+                if (ts != null) {
+                    dato = ts.toLocalDateTime();
                 }
+
+                Bruger bruger = new Bruger(
+                        resultSet.getInt("bruger_id"),
+                        resultSet.getString("navn"),
+                        resultSet.getString("email"),
+                        resultSet.getString("kodeord"),
+                        dato
+                );
+
+                brugere.add(bruger);
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return bruger;
-    }
 
-    //Find bruger via Id
-    public Optional<Bruger> findById(int brugerId){
-        return brugere.stream()
-                .filter(b -> b.getBrugerId() == brugerId)
-                .findFirst();
-    }
-
-    //Find bruger via email
-    public Optional<Bruger> findByEmail(String email){
-        return brugere.stream()
-                .filter(b -> b.getEmail().equalsIgnoreCase(email))
-                .findFirst();
+        return brugere;
     }
 }
