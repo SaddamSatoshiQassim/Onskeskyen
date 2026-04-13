@@ -10,12 +10,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class BrugerController {
-  private final BrugerService services = new BrugerService();
+  private final BrugerService services;
+
+  public  BrugerController(BrugerService services){
+      this.services = services;
+  }
 
   @GetMapping("/")
     public String startside(){
           return "index";
   }
+
+  @GetMapping("/index.html")
+    public String startsideHtml() {
+          return "redirect:/";
+  }
+
+    @GetMapping("/login")
+    public String visLogin() {
+        return "login";
+    }
+
+    @GetMapping("/login.html")
+    public String visLoginHtml() {
+        return "redirect:/login";
+    }
 
     @PostMapping("/login")
     public String login(@RequestParam String brugernavn, @RequestParam String kodeord, Model model) {
@@ -41,6 +60,4 @@ public class BrugerController {
     public String visOnskeliste(Model model) {
         return "onskeliste";
     }
-
-
 }
