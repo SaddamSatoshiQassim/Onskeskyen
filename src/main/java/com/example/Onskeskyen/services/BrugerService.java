@@ -1,36 +1,50 @@
 package com.example.Onskeskyen.services;
+
 import com.example.Onskeskyen.models.Bruger;
 import com.example.Onskeskyen.repositorys.BrugerRepository;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
-
-//opretBruge (navn, email, kodeord)
-//godkendLogin(email, kodeord)
-//FindBruger (bruger_id)
-//HEj
-
-
+@Service
 public class BrugerService {
 
-    private BrugerRepository brugerRepository = new BrugerRepository();
+    private final BrugerRepository brugerRepository;
 
-    public void opretBruger(String navn, String email, String kodeord){
-      Bruger bruger = new Bruger(0, navn, email, kodeord, LocalDateTime.now());
+    public BrugerService(BrugerRepository brugerRepository) {
+        this.brugerRepository = brugerRepository;
+    }
+
+    public List<Bruger> getAllBrugere() {
+        return brugerRepository.findAll();
+    }
+
+    public Optional<Bruger> findBruger(int brugerId) {
+        return brugerRepository.findById(brugerId);
+    }
+
+    public void opretBruger(String navn, String email, String kodeord) {
+        Bruger bruger = new Bruger(0, navn, email, kodeord, LocalDateTime.now());
         brugerRepository.save(bruger);
     }
 
-    public boolean godkendLogin(String email, String kodeord){
+    public void updateBrugerById(int id, String navn, String email, String kodeord) {
+        brugerRepository.updateById(id, navn, email, kodeord);
+    }
+
+    public void deleteBrugerById(int id) {
+        brugerRepository.deleteById(id);
+    }
+
+    public boolean godkendLogin(String email, String kodeord) {
         Optional<Bruger> brugerOpt = brugerRepository.findByEmail(email);
 
-        if (brugerOpt.isPresent()){
+        if (brugerOpt.isPresent()) {
             Bruger bruger = brugerOpt.get();
             return bruger.getKodeord().equals(kodeord);
         }
         return false;
-    }
-
-    public Optional<Bruger> findBruger(int brugerId){
-    return brugerRepository.findById(brugerId);
     }
 }

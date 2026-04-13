@@ -42,5 +42,5 @@ public class BrugerController {
         return "onskeliste";
     }
 
-    System.out.println("kj")
+
 }

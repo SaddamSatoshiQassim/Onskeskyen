@@ -107,5 +107,55 @@ public class BrugerRepository {
             e.printStackTrace();
         }
     }
+    public void save(Bruger bruger) {
+        String sql = "INSERT INTO bruger (navn, email, kodeord, dato) VALUES (?, ?, ?, ?)";
 
+        try (Connection connection = DriverManager.getConnection(dbUrl, username, password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, bruger.getNavn());
+            statement.setString(2, bruger.getEmail());
+            statement.setString(3, bruger.getKodeord());
+            statement.setTimestamp(4, Timestamp.valueOf(bruger.getDato()));
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public Optional<Bruger> findByEmail(String email) {
+        String sql = "SELECT * FROM bruger WHERE email = ?";
+
+        try (Connection connection = DriverManager.getConnection(dbUrl, username, password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                Timestamp ts = resultSet.getTimestamp("dato");
+                LocalDateTime dato = null;
+
+                if (ts != null) {
+                    dato = ts.toLocalDateTime();
+                }
+
+                Bruger bruger = new Bruger(
+                        resultSet.getInt("bruger_id"),
+                        resultSet.getString("navn"),
+                        resultSet.getString("email"),
+                        resultSet.getString("kodeord"),
+                        dato
+                );
+
+                return Optional.of(bruger);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
 }
