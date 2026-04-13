@@ -1,4 +1,4 @@
-
+package com.example.Onskeskyen;
 
 import com.example.Onskeskyen.controllers.BrugerController;
 
