@@ -25,11 +25,11 @@ public class BrugerRepository {
              ResultSet resultSet = statement.executeQuery(sql)) {
 
             while (resultSet.next()) {
-                Timestamp ts = resultSet.getTimestamp("oprettet_dato");
-                LocalDateTime oprettetDato = null;
+                Timestamp ts = resultSet.getTimestamp("dato");
+                LocalDateTime dato = null;
 
                 if (ts != null) {
-                    oprettetDato = ts.toLocalDateTime();
+                    dato = ts.toLocalDateTime();
                 }
 
                 Bruger bruger = new Bruger(
@@ -37,7 +37,7 @@ public class BrugerRepository {
                         resultSet.getString("navn"),
                         resultSet.getString("email"),
                         resultSet.getString("kodeord"),
-                        oprettetDato
+                        dato
                 );
 
                 brugere.add(bruger);
@@ -60,11 +60,11 @@ public class BrugerRepository {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                Timestamp ts = resultSet.getTimestamp("oprettet_dato");
-                LocalDateTime oprettetDato = null;
+                Timestamp ts = resultSet.getTimestamp("dato");
+                LocalDateTime dato = null;
 
                 if (ts != null) {
-                    oprettetDato = ts.toLocalDateTime();
+                    dato = ts.toLocalDateTime();
                 }
 
                 Bruger bruger = new Bruger(
@@ -72,7 +72,7 @@ public class BrugerRepository {
                         resultSet.getString("navn"),
                         resultSet.getString("email"),
                         resultSet.getString("kodeord"),
-                        oprettetDato
+                        dato
                 );
 
                 return Optional.of(bruger);
@@ -83,69 +83,6 @@ public class BrugerRepository {
         }
 
         return Optional.empty();
-    }
-
-    public Optional<Bruger> findByEmail(String email) {
-        String sql = "SELECT * FROM bruger WHERE email = ?";
-
-        try (Connection connection = DriverManager.getConnection(dbUrl, username, password);
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                Timestamp ts = resultSet.getTimestamp("oprettet_dato");
-                LocalDateTime oprettetDato = null;
-
-                if (ts != null) {
-                    oprettetDato = ts.toLocalDateTime();
-                }
-
-                Bruger bruger = new Bruger(
-                        resultSet.getInt("bruger_id"),
-                        resultSet.getString("navn"),
-                        resultSet.getString("email"),
-                        resultSet.getString("kodeord"),
-                        oprettetDato
-                );
-
-                return Optional.of(bruger);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return Optional.empty();
-    }
-
-    public void save(Bruger bruger) {
-        String sql = "INSERT INTO bruger (navn, email, kodeord, oprettet_dato) VALUES (?, ?, ?, ?)";
-
-        try (Connection connection = DriverManager.getConnection(dbUrl, username, password);
-             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            statement.setString(1, bruger.getNavn());
-            statement.setString(2, bruger.getEmail());
-            statement.setString(3, bruger.getKodeord());
-
-            if (bruger.getOprettetDato() != null) {
-                statement.setTimestamp(4, Timestamp.valueOf(bruger.getOprettetDato()));
-            } else {
-                statement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
-            }
-
-            statement.executeUpdate();
-
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                bruger.setBrugerId(generatedKeys.getInt(1));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public void updateById(int id, String navn, String email, String kodeord) {
@@ -179,4 +116,62 @@ public class BrugerRepository {
             e.printStackTrace();
         }
     }
+
+    public void save(Bruger bruger) {
+        String sql = "INSERT INTO bruger (navn, email, kodeord, dato) VALUES (?, ?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection(dbUrl, username, password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, bruger.getNavn());
+            statement.setString(2, bruger.getEmail());
+            statement.setString(3, bruger.getKodeord());
+            statement.setTimestamp(4, Timestamp.valueOf(bruger.getDato()));
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Optional<Bruger> findByEmail(String email) {
+        String sql = "SELECT * FROM bruger WHERE email = ?";
+
+        try (Connection connection = DriverManager.getConnection(dbUrl, username, password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                Timestamp ts = resultSet.getTimestamp("dato");
+                LocalDateTime dato = null;
+
+                if (ts != null) {
+                    dato = ts.toLocalDateTime();
+                }
+
+                Bruger bruger = new Bruger(
+                        resultSet.getInt("bruger_id"),
+                        resultSet.getString("navn"),
+                        resultSet.getString("email"),
+                        resultSet.getString("kodeord"),
+                        dato
+                );
+
+                return Optional.of(bruger);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
 }
+
+
+
+
+
