@@ -39,21 +39,20 @@ public class BrugerService {
     }
 
     public boolean godkendLogin(String email, String kodeord) {
+    email = email.trim();
+    kodeord = kodeord.trim();
 
-        // simpel validering
-        if (email == null || !email.contains("@")) {
-            return false;
-        }
-
-        if (kodeord == null || kodeord.length() < 4) {
-            return false;
-        }
+        System.out.println("Login email: " +email);
         Bruger bruger = findBrugerByEmail(email);
 
-        if (bruger == null) {
+        if(bruger == null){
+            System.out.println("bruger blev ikke fundet i DB");
             return false;
         }
-        return bruger.getKodeord().equals(kodeord);
+        System.out.println("DB email: " + bruger.getEmail());
+        System.out.println("DB kodeord: " + bruger.getKodeord());
+
+        return  bruger.getKodeord().equals(kodeord);
     }
     public Bruger findBrugerByEmail(String email) {
         return brugerRepository.findByEmail(email).orElse(null);
