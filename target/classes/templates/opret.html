@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opret bruger | Ønskeskyen</title>
+    <link rel="stylesheet" href="/style.css" th:href="@{/style.css}">
+</head>
+<body>
+<main class="auth-page">
+    <section class="auth-box">
+        <h1>Ønskeskyen</h1>
+        <h2>Opret bruger</h2>
+        <p class="subtitle">Lav en ny brugerprofil</p>
+
+        <p class="error" th:if="${fejl}" th:text="${fejl}"></p>
+
+        <form th:action="@{/opret}" method="post" class="auth-form">
+            <input type="text" name="navn" placeholder="Navn" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="kodeord" placeholder="Kodeord" required>
+            <button type="submit">Opret bruger</button>
+        </form>
+
+        <div class="auth-switch">
+            <p>Har du allerede en bruger?</p>
+            <a th:href="@{/login}" href="/login" class="small-btn">Tilbage til login</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>
