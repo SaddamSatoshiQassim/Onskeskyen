@@ -15,6 +15,7 @@ public class OnskeRepository {
     private String password = System.getenv("DB_PASSWORD");
 
     public List<Onske> hentOnsker(int brugerId) {
+
         List<Onske> onsker = new ArrayList<>();
 
         String sql = """
@@ -50,64 +51,5 @@ public class OnskeRepository {
         }
 
         return onsker;
-    }
-
-    public void opretOnske(int brugerId, String navn, String link, double pris, String billede) {
-        String findListeSql = "SELECT ønskeliste_id FROM ønskeliste WHERE ejer_bruger_id = ? LIMIT 1";
-        String opretListeSql = "INSERT INTO ønskeliste (ejer_bruger_id, titel, offentlig, dato) VALUES (?, ?, ?, CURDATE())";
-        String opretProduktSql = "INSERT INTO produkt (navn, pris, produkt_link, billede_link) VALUES (?, ?, ?, ?)";
-        String opretItemSql = "INSERT INTO ønskeliste_item (ønskeliste_id, produkt_id, købt, dato) VALUES (?, ?, false, CURDATE())";
-
-        try (Connection connection = DriverManager.getConnection(dbUrl, username, password)) {
-
-            int ønskelisteId = -1;
-
-            try (PreparedStatement statement = connection.prepareStatement(findListeSql)) {
-                statement.setInt(1, brugerId);
-                ResultSet rs = statement.executeQuery();
-
-                if (rs.next()) {
-                    ønskelisteId = rs.getInt("ønskeliste_id");
-                }
-            }
-
-            if (ønskelisteId == -1) {
-                try (PreparedStatement statement = connection.prepareStatement(opretListeSql, Statement.RETURN_GENERATED_KEYS)) {
-                    statement.setInt(1, brugerId);
-                    statement.setString(2, "Min ønskeliste");
-                    statement.setBoolean(3, true);
-                    statement.executeUpdate();
-
-                    ResultSet keys = statement.getGeneratedKeys();
-                    if (keys.next()) {
-                        ønskelisteId = keys.getInt(1);
-                    }
-                }
-            }
-
-            int produktId = -1;
-
-            try (PreparedStatement statement = connection.prepareStatement(opretProduktSql, Statement.RETURN_GENERATED_KEYS)) {
-                statement.setString(1, navn);
-                statement.setDouble(2, pris);
-                statement.setString(3, link);
-                statement.setString(4, billede);
-                statement.executeUpdate();
-
-                ResultSet keys = statement.getGeneratedKeys();
-                if (keys.next()) {
-                    produktId = keys.getInt(1);
-                }
-            }
-
-            try (PreparedStatement statement = connection.prepareStatement(opretItemSql)) {
-                statement.setInt(1, ønskelisteId);
-                statement.setInt(2, produktId);
-                statement.executeUpdate();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
