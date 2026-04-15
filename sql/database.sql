@@ -4,6 +4,7 @@ CREATE DATABASE IF NOT EXISTS Onskeskyen
 
 USE Onskeskyen;
 
+
 CREATE TABLE IF NOT EXISTS bruger
 (
     bruger_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -40,9 +41,8 @@ CREATE TABLE IF NOT EXISTS ønskeliste
     titel          VARCHAR(100) NOT NULL,
     beskrivelse    VARCHAR(100) NULL,
     offentlig      TINYINT(1) NULL,
-    delingskode    VARCHAR(50) NULL,
     delingslink    VARCHAR(50) NULL,
-    dato           DATE NULL,
+    oprettet_dato           DATETIME NULL,
     INDEX idx_onskeliste_ejer_bruger_id (ejer_bruger_id),
     CONSTRAINT fk_onskeliste_bruger
         FOREIGN KEY (ejer_bruger_id) REFERENCES bruger (bruger_id)
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS ønskeliste_item
     prioritet          INT NULL,
     antal              INT NULL,
     købt               TINYINT(1) NULL,
-    dato               DATE NULL,
+    dato               DATETIME NULL,
     INDEX idx_onskeliste_item_onskeliste_id (ønskeliste_id),
     INDEX idx_onskeliste_item_produkt_id (produkt_id),
     CONSTRAINT fk_onskeliste_item_onskeliste
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS reservation
     bruger_id          INT NULL,
     antal              INT NULL,
     købt               TINYINT(1) NULL,
-    dato               DATE NULL,
+    dato               DATETIME NULL,
     INDEX idx_reservation_onskeliste_item_id (ønskeliste_item_id),
     INDEX idx_reservation_bruger_id (bruger_id),
     CONSTRAINT fk_reservation_onskeliste_item
@@ -81,3 +81,4 @@ CREATE TABLE IF NOT EXISTS reservation
     CONSTRAINT fk_reservation_bruger
         FOREIGN KEY (bruger_id) REFERENCES bruger (bruger_id)
 );
+
