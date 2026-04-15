@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mine ønskelister</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<header>
+    <div class="top-bar">
+        <h1>Mine ønskelister</h1>
+    </div>
+</header>
+
+<nav class="main-nav">
+    <div class="nav-left">
+        <a href="/" class="nav-link">Forside</a>
+        <a href="/onskeliste" class="nav-link">Min ønskeliste</a>
+        <a href="/onskelister" class="nav-link">Ønskelister</a>
+        <a href="/opret-onskeliste" class="login-btn">Opret ønskeliste</a>
+    </div>
+
+    <div class="nav-right">
+        <form action="/logout" method="post" class="logout-form">
+            <button type="submit" class="nav-link-btn">Log ud</button>
+        </form>
+    </div>
+</nav>
+
+<main>
+    <section class="box" style="grid-column: 1 / -1;">
+        <h2 th:text="'Hej ' + ${bruger.navn}"></h2>
+        <p>Her kan du se og administrere dine ønskelister.</p>
+    </section>
+
+    <section class="box" style="grid-column: 1 / -1;">
+        <h2>Alle ønskelister</h2>
+
+        <div th:if="${#lists.isEmpty(onskelister)}">
+            <p>Du har ingen ønskelister endnu.</p>
+            <a href="/opret-onskeliste" class="login-btn">Opret din første ønskeliste</a>
+        </div>
+
+        <div th:if="${!#lists.isEmpty(onskelister)}">
+            <ul class="wish-list">
+                <li th:each="liste : ${onskelister}" class="available">
+                    <span class="wish-title" th:text="${liste.titel}">Min ønskeliste</span>
+
+                    <div class="wish-meta">
+                        Beskrivelse:
+                        <span th:text="${liste.beskrivelse}">Beskrivelse</span>
+                    </div>
+
+                    <div class="wish-meta">
+                        Offentlig:
+                        <span th:text="${liste.offentlig} ? 'Ja' : 'Nej'">Ja</span>
+                    </div>
+
+                    <div class="wish-meta">
+                        Delingslink:
+                        <a th:href="${liste.delingslink}" th:text="${liste.delingslink}" target="_blank"></a>
+                    </div>
+
+                    <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <a th:href="@{/onskelister/{id}(id=${liste.onskelisteId})}" class="login-btn">Åbn</a>
+
+                        <form action="/slet-onskeliste" method="post" style="display:inline;">
+                            <input type="hidden" name="id" th:value="${liste.onskelisteId}">
+                            <button type="submit" class="nav-link-btn">Slet</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Ønskeskyen</p>
+</footer>
+
+</body>
+</html>
