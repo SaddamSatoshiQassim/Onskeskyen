@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Profil | Ønskeskyen</title>
 
-    <!-- LINK TIL CSS -->
+
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
@@ -15,15 +15,23 @@
     </div>
 </header>
 
-<nav>
-    <a href="/">Forside</a>
-    <a href="/onskeliste">Min ønskeliste</a>
-    <a href="/profil">Profil</a>
-    <a href="/mine-onsker">Mine ønsker</a>
-    <a href="/tilfoej-onske" class="login-btn">Tilføj ønske</a>
-    <a href="/onskelister">Ønskelister</a>
-    <a href="/logout" class="logout-btn">Log ud</a>
+<nav class="main-nav">
+    <div class="nav-left">
+        <a href="/" class="nav-link">Forside</a>
+        <a href="/onskeliste" class="nav-link">Min ønskeliste</a>
+        <a href="/profil" class="nav-link">Profil</a>
+        <a href="/mine-onsker" class="nav-link">Mine ønsker</a>
+        <a href="/tilfoej-onske" class="login-btn">Tilføj ønske</a>
+        <a href="/onskelister" class="nav-link">Ønskelister</a>
+    </div>
+
+    <div class="nav-right">
+        <form action="/logout" method="post" class="logout-form">
+            <button type="submit" class="nav-link-btn">Log ud</button>
+        </form>
+    </div>
 </nav>
+
 
 <main>
     <section class="box">
