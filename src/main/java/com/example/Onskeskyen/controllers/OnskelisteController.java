@@ -1,14 +1,19 @@
 package com.example.Onskeskyen.controllers;
 
 import com.example.Onskeskyen.models.Bruger;
+import com.example.Onskeskyen.models.Onske;
 import com.example.Onskeskyen.models.Onskeliste;
+import com.example.Onskeskyen.models.Reservation;
 import com.example.Onskeskyen.services.BrugerService;
 import com.example.Onskeskyen.services.OnskeService;
 import com.example.Onskeskyen.services.OnskelisteService;
+import com.example.Onskeskyen.services.ReservationService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class OnskelisteController {
@@ -16,15 +21,17 @@ public class OnskelisteController {
     private final OnskelisteService onskelisteService;
     private final OnskeService onskeService;
     private final BrugerService brugerService;
+    private final ReservationService reservationService;
 
     public OnskelisteController(OnskelisteService onskelisteService,
                                 OnskeService onskeService,
-                                BrugerService brugerService) {
+                                BrugerService brugerService,
+                                ReservationService reservationService) {
         this.onskelisteService = onskelisteService;
         this.onskeService = onskeService;
         this.brugerService = brugerService;
+        this.reservationService = reservationService;
     }
-
 
     @GetMapping("/onskelister")
     public String visOnskelister(HttpSession session, Model model) {
@@ -86,7 +93,6 @@ public class OnskelisteController {
         return "redirect:/onskelister";
     }
 
-
     @GetMapping("/onskelister/{id}")
     public String visEnOnskeliste(@PathVariable int id,
                                   HttpSession session,
@@ -98,8 +104,23 @@ public class OnskelisteController {
             return "redirect:/login";
         }
 
+        List<Onske> onsker = onskeService.hentOnskerForListe(id);
+
+        for (Onske o : onsker) {
+
+            Reservation r = reservationService.hentReservation(o.getOnskeId());
+
+            if (r != null) {
+                o.setBooket(true);
+                o.setReserveretAfBrugerId(r.getBrugerId());
+            } else {
+                o.setBooket(false);
+            }
+        }
+
+        model.addAttribute("currentUserId", brugerId);
         model.addAttribute("onskelisteId", id);
-        model.addAttribute("onsker", onskeService.hentOnskerForListe(id));
+        model.addAttribute("onsker", onsker);
 
         return "onskeliste-detalje";
     }

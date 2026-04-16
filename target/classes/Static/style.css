@@ -128,26 +128,32 @@ main {
     border-radius: 8px;
 }
 
-.booked {
-    border-left: 6px solid red;
-}
-
 .available {
     border-left: 6px solid green;
+    background-color: #f3fff4;
+}
+
+.booked {
+    border-left: 6px solid red;
+    background-color: #fff5f5;
 }
 
 .status {
     padding: 4px 10px;
     border-radius: 999px;
     font-size: 13px;
+    display: inline-block;
+    margin-top: 5px;
 }
 
 .status-free {
     background-color: #dff3e2;
+    color: #2f5d50;
 }
 
 .status-booked {
     background-color: #f8dede;
+    color: #8b0000;
 }
 
 footer {
@@ -176,5 +182,4 @@ footer {
     main {
         grid-template-columns: 1fr;
     }
-
 }

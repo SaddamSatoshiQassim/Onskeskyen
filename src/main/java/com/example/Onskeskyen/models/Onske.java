@@ -7,6 +7,7 @@ public class Onske {
     private String link;
     private double pris;
     private String billede;
+    private int reserveretAfBrugerId;
     private boolean booket;
 
     public Onske(int onskeId, int brugerId, String navn, String link, double pris, String billede, boolean booket) {
@@ -65,6 +66,14 @@ public class Onske {
 
     public void setBillede(String billede) {
         this.billede = billede;
+    }
+
+    public Integer getReserveretAfBrugerId() {
+        return reserveretAfBrugerId;
+    }
+
+    public void setReserveretAfBrugerId(Integer reserveretAfBrugerId) {
+        this.reserveretAfBrugerId = reserveretAfBrugerId;
     }
 
     public boolean isBooket() {
