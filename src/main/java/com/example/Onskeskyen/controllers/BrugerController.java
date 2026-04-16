@@ -28,6 +28,16 @@ public class BrugerController {
         return "login";
     }
 
+    @GetMapping("/om-os")
+    public String visOmOs() {
+        return "om-os";
+    }
+
+    @GetMapping("/kontakt")
+    public String visKontakt() {
+        return "kontakt";
+    }
+
     @PostMapping("/login")
     public String login(@RequestParam String email,
                         @RequestParam String kodeord,
