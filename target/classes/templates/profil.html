@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil | Ønskeskyen</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<header>
+    <div class="top-bar">
+        <h1>Ønskeskyen</h1>
+    </div>
+</header>
+
+<nav class="main-nav">
+    <div class="nav-left">
+        <a href="/" class="nav-link">Forside</a>
+        <a href="/profil" class="nav-link">Profil</a>
+        <a href="/onskelister" class="nav-link">Ønskelister</a>
+        <a href="/tilfoej-onske" class="login-btn">Tilføj ønske</a>
+    </div>
+
+    <div class="nav-right">
+        <form action="/logout" method="post" class="logout-form">
+            <button type="submit" class="nav-link-btn">Log ud</button>
+        </form>
+    </div>
+</nav>
+
+<main>
+    <section class="box">
+        <h2>Min profil</h2>
+        <p><strong>Navn:</strong> <span th:text="${bruger.navn}">Bruger</span></p>
+        <p><strong>Bruger ID:</strong> <span th:text="${bruger.brugerId}">1</span></p>
+        <p><strong>Email:</strong> <span th:text="${bruger.email}">mail@mail.dk</span></p>
+    </section>
+
+    <section class="box">
+        <h2>Mine ønsker</h2>
+
+        <p th:if="${#lists.isEmpty(onsker)}">Du har ingen ønsker endnu.</p>
+
+        <ul class="wish-list" th:if="${!#lists.isEmpty(onsker)}">
+            <li th:each="onske : ${onsker}" class="available">
+
+                <span class="wish-title" th:text="${onske.navn}">Navn</span>
+
+                <div class="wish-meta" th:if="${onske.beskrivelse != null and !#strings.isEmpty(onske.beskrivelse)}">
+                    Beskrivelse: <span th:text="${onske.beskrivelse}"></span>
+                </div>
+
+                <div class="wish-meta">
+                    Pris: <span th:text="${onske.pris}">0</span> kr.
+                </div>
+
+                <div class="wish-meta" th:if="${onske.produktLink != null and !#strings.isEmpty(onske.produktLink)}">
+                    <a th:href="${onske.produktLink}" target="_blank">Se produkt</a>
+                </div>
+
+                <div class="wish-meta" th:if="${onske.billedeLink != null and !#strings.isEmpty(onske.billedeLink)}">
+                    <img th:src="${onske.billedeLink}" alt="Produktbillede" style="max-width: 140px; border-radius: 8px;">
+                </div>
+
+                <span th:if="${onske.kobt}" class="status status-booked">Købt</span>
+                <span th:if="${!onske.kobt}" class="status status-free">Aktiv</span>
+            </li>
+        </ul>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Ønskeskyen</p>
+</footer>
+
+</body>
+</html>

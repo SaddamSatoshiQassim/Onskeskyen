@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt - Julemanden</title>
+    <link rel="stylesheet" href="/style.css" th:href="@{/style.css}">
+</head>
+<body>
+<header>
+    <div class="top-bar">
+        <h1>Skriv til Julemandens Værksted ✉️</h1>
+    </div>
+</header>
+
+<nav>
+    <a href="/" th:href="@{/}">Forside</a>
+    <a href="/om-os" th:href="@{/om-os}">Om os</a>
+    <a href="/login" class="login-btn" th:href="@{/login}">Login</a>
+</nav>
+
+<main>
+    <section class="box">
+        <h2>Send en nissepost 📮</h2>
+        <p>Har du spørgsmål til din ønskeseddel, eller har nisserne lavet en drillefejl på siden? Så send os en nissepost her!</p>
+
+        <form action="#" th:action="@{/kontakt}" method="POST">
+            <p>
+                <label for="name"><strong>Dit Navn:</strong></label><br>
+                <input type="text" id="name" name="name" placeholder="F.eks. Lille-Per eller Bedstemor Oda" required style="width: 100%; max-width: 400px; padding: 8px; margin-top: 5px;">
+            </p>
+
+            <p>
+                <label for="email"><strong>Din E-mailadresse:</strong></label><br>
+                <input type="email" id="email" name="email" placeholder="Hvor skal vi sende svaret hen?" required style="width: 100%; max-width: 400px; padding: 8px; margin-top: 5px;">
+            </p>
+
+            <p>
+                <label for="message"><strong>Din Besked:</strong></label><br>
+                <textarea id="message" name="message" rows="4" placeholder="Skriv din besked til Julemanden her..." required style="width: 100%; max-width: 400px; padding: 8px; margin-top: 5px;"></textarea>
+            </p>
+
+            <p>
+                <button type="submit" style="background-color: #D32F2F; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                    Send afsted til Nordpolen 🚀
+                </button>
+            </p>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Julemandens Ønskebog</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  background: url('https://w.wallhaven.cc/full/ex/wallhaven-exg5kk.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.login-box {
+  width: 350px;
+  padding: 40px;
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  color: white;
+  position: relative;
+}
+
+/* SKJUL forms som standard */
+form {
+  display: none;
+}
+
+/* VIS login som standard */
+#login {
+  display: block;
+}
+
+/* VIS register når den er target */
+#register:target {
+  display: block;
+}
+
+/* SKJUL login når register er aktiv */
+#register:target ~ #login {
+  display: none;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.input-box {
+  margin-bottom: 20px;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 25px;
+  background: #6c63ff;
+  color: white;
+  cursor: pointer;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.register-link a {
+  color: #b3b3ff;
+  text-decoration: none;
+}
