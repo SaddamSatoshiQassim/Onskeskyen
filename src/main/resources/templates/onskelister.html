@@ -19,7 +19,7 @@
         <a href="/" class="nav-link">Forside</a>
         <a href="/onskeliste" class="nav-link">Min ønskeliste</a>
         <a href="/onskelister" class="nav-link">Ønskelister</a>
-        <a href="/opret-onskeliste" class="login-btn">Opret ønskeliste</a>
+        <a href="#opret-liste" class="login-btn">Opret ønskeliste</a>
     </div>
 
     <div class="nav-right">
@@ -35,12 +35,31 @@
         <p>Her kan du se og administrere dine ønskelister.</p>
     </section>
 
+    <section id="opret-liste" class="box" style="grid-column: 1 / -1;">
+        <h2>Opret ønskeliste</h2>
+
+        <form action="/opret-onskeliste" method="post">
+            <input type="text" name="titel" placeholder="Titel" required>
+            <br><br>
+
+            <input type="text" name="beskrivelse" placeholder="Beskrivelse">
+            <br><br>
+
+            <label>
+                <input type="checkbox" name="offentlig" value="true">
+                Offentlig
+            </label>
+            <br><br>
+
+            <button type="submit" class="login-btn">Opret ønskeliste</button>
+        </form>
+    </section>
+
     <section class="box" style="grid-column: 1 / -1;">
         <h2>Alle ønskelister</h2>
 
         <div th:if="${#lists.isEmpty(onskelister)}">
             <p>Du har ingen ønskelister endnu.</p>
-            <a href="/opret-onskeliste" class="login-btn">Opret din første ønskeliste</a>
         </div>
 
         <div th:if="${!#lists.isEmpty(onskelister)}">

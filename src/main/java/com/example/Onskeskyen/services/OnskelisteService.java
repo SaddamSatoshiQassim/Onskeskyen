@@ -30,5 +30,10 @@ public class OnskelisteService {
     public void deleteById(int id) {
         onskelisteRepository.deleteById(id);
     }
-
+    public Onskeliste findById(int id) {
+        return onskelisteRepository.findById(id);
+    }
+    public void updateDelingslinkById(int id, String delingslink) {
+        onskelisteRepository.updateDelingslinkById(id, delingslink);
+    }
 }

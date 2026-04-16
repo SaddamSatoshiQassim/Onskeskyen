@@ -36,6 +36,14 @@ public class Onskeliste {
         this.oprettetDato = LocalDateTime.now();
     }
 
+    public void setOnskelisteId(int onskelisteId) {
+        this.onskelisteId = onskelisteId;
+    }
+
+    public void setDelingslink(String delingslink) {
+        this.delingslink = delingslink;
+    }
+
     public int getOnskelisteId() {
         return onskelisteId;
     }

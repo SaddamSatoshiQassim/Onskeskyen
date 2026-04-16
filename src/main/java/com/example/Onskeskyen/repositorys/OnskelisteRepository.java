@@ -51,7 +51,7 @@ public class OnskelisteRepository {
         String sql = "INSERT INTO ønskeliste (ejer_bruger_id, titel, beskrivelse, offentlig, delingslink, oprettet_dato) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(dbUrl, username, password);
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setInt(1, liste.getBrugerId());
             statement.setString(2, liste.getTitel());
@@ -61,6 +61,11 @@ public class OnskelisteRepository {
             statement.setTimestamp(6, Timestamp.valueOf(liste.getOprettetDato()));
 
             statement.executeUpdate();
+
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                liste.setOnskelisteId(generatedKeys.getInt(1));
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,6 +97,50 @@ public class OnskelisteRepository {
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, id);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public Onskeliste findById(int id) {
+        String sql = "SELECT * FROM ønskeliste WHERE ønskeliste_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(dbUrl, username, password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                Timestamp ts = resultSet.getTimestamp("oprettet_dato");
+
+                return new Onskeliste(
+                        resultSet.getInt("ønskeliste_id"),
+                        resultSet.getInt("ejer_bruger_id"),
+                        resultSet.getString("titel"),
+                        resultSet.getString("beskrivelse"),
+                        resultSet.getBoolean("offentlig"),
+                        resultSet.getString("delingslink"),
+                        ts != null ? ts.toLocalDateTime() : null
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    public void updateDelingslinkById(int id, String delingslink) {
+        String sql = "UPDATE ønskeliste SET delingslink = ? WHERE ønskeliste_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(dbUrl, username, password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, delingslink);
+            statement.setInt(2, id);
+
             statement.executeUpdate();
 
         } catch (SQLException e) {

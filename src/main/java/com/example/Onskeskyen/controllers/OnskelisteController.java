@@ -78,17 +78,19 @@ public class OnskelisteController {
             return "redirect:/login";
         }
 
-        String delingslink = "http://localhost:8080/onskelister/" + titel.replace(" ", "-");
-
         Onskeliste liste = new Onskeliste(
                 brugerId,
                 titel,
                 beskrivelse,
                 offentlig,
-                delingslink
+                ""
         );
 
         onskelisteService.save(liste);
+
+        String delingslink = "http://localhost:8080/onskelister/" + liste.getOnskelisteId();
+        onskelisteService.updateDelingslinkById(liste.getOnskelisteId(), delingslink);
+        liste.setDelingslink(delingslink);
 
         return "redirect:/onskelister";
     }
@@ -104,28 +106,25 @@ public class OnskelisteController {
             return "redirect:/login";
         }
 
-        List<Onske> onsker = onskeService.hentOnskerForListe(id);
-
-        for (Onske o : onsker) {
-
-            Reservation r = reservationService.hentReservation(o.getOnskeId());
-
-            if (r != null) {
-                o.setBooket(true);
-                o.setReserveretAfBrugerId(r.getBrugerId());
-            } else {
-                o.setBooket(false);
-            }
+        Bruger bruger = brugerService.findBruger(brugerId);
+        if (bruger == null) {
+            return "redirect:/login";
         }
 
-        model.addAttribute("currentUserId", brugerId);
+        Onskeliste liste = onskelisteService.findById(id);
+        if (liste == null) {
+            return "redirect:/onskelister";
+        }
+
+        model.addAttribute("bruger", bruger);
+        model.addAttribute("onskeliste", liste);
         model.addAttribute("onskelisteId", id);
-        model.addAttribute("onsker", onsker);
+        model.addAttribute("onsker", onskeService.hentOnskerForListe(id));
 
         return "onskeliste-detalje";
     }
 
-    // ➕ Tilføj ønske til liste
+
     @PostMapping("/onskelister/{id}/tilfoej-onske")
     public String tilfoejOnske(@PathVariable int id,
                                @RequestParam String navn,
@@ -145,7 +144,7 @@ public class OnskelisteController {
         return "redirect:/onskelister/" + id;
     }
 
-    // ❌ Slet ønskeliste
+
     @PostMapping("/slet-onskeliste")
     public String sletOnskeliste(@RequestParam int id, HttpSession session) {
         Integer brugerId = (Integer) session.getAttribute("brugerId");

@@ -1,6 +1,7 @@
 package com.example.Onskeskyen.repositorys;
 
 import com.example.Onskeskyen.models.Reservation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Repository
 public class ReservationRepository {
+
 
     private final JdbcTemplate jdbcTemplate;
 
