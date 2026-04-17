@@ -17,21 +17,19 @@
 
 <nav class="main-nav">
     <div class="nav-left">
-        <a th:href="@{/om-os}">Om os</a>
-        <a th:href="@{/kontakt}">Kontakt</a>
+        <a th:href="@{/om-os}" class="nav-link">Om os</a>
+        <a th:href="@{/kontakt}" class="nav-link">Kontakt</a>
 
-        <a th:if="${session.brugerId != null}" th:href="@{/profil}">
+        <a th:if="${session.brugerId != null}" th:href="@{/profil}" class="nav-link">
             Profil
         </a>
     </div>
 
     <div class="nav-right">
-        <!-- IKKE LOGGET IND -->
         <a th:if="${session.brugerId == null}" th:href="@{/login}" class="login-btn">
             Login
         </a>
 
-        <!-- LOGGET IND -->
         <form th:if="${session.brugerId != null}" th:action="@{/logout}" method="post" class="logout-form">
             <button type="submit" class="nav-link-btn">Log ud</button>
         </form>
@@ -41,17 +39,38 @@
 <main>
     <section class="box">
         <h2>Mine ønsker</h2>
-        <p>Her kan brugeren hurtigt få overblik over sine ønsker.</p>
+        <p>
+            Her kan du se alle dine ønsker samlet på ét sted.<br>
+            Du får hurtigt et overblik over din ønskeliste.<br>
+            Det gør det nemt at holde styr på dine idéer.<br>
+            Du kan altid gå tilbage og se tidligere ønsker.<br>
+            På den måde mister du ikke noget vigtigt.<br>
+            Det giver en enkel og overskuelig brugeroplevelse.
+        </p>
     </section>
 
     <section class="box">
         <h2>Opret nyt ønske</h2>
-        <p>En enkel boks hvor man nemt kan tilføje nye ønsker.</p>
+        <p>
+            Her kan du nemt tilføje et nyt ønske til listen.<br>
+            Skriv navnet på det, du ønsker dig mest.<br>
+            Du kan løbende opdatere din liste med nye idéer.<br>
+            Det gør det lettere for andre at se dine ønsker.<br>
+            Funktionen er hurtig, enkel og nem at bruge.<br>
+            Så kan du altid holde ønskelisten opdateret.
+        </p>
     </section>
 
     <section class="box">
         <h2>Populære ønsker</h2>
-        <p>Viser udvalgte eller ofte brugte ønsker på en enkel måde.</p>
+        <p>
+            Her kan du finde inspiration til nye ønsker.<br>
+            Du kan se gaver, som mange andre også ønsker sig.<br>
+            Det kan hjælpe dig, hvis du mangler gode idéer.<br>
+            Populære ønsker gør listen mere spændende.<br>
+            Du kan opdage nye ting, du ikke havde tænkt på.<br>
+            Det gør det lettere at udfylde din ønskesky.
+        </p>
     </section>
 </main>
 
