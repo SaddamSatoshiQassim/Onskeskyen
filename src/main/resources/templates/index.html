@@ -28,9 +28,11 @@
     </a>
 
     <!-- LOGOUT -->
-    <form th:if="${session.brugerId != null}" href="/logout" class="login-btn">
-        Log ud
-    </form>
+    <div class="nav-right">
+        <form th:if="${session.brugerId != null}" action="/logout" method="post" class="logout-form">
+            <button type="submit" class="nav-link-btn">Log ud</button>
+        </form>
+    </div>
 </nav>
 
 <main>
