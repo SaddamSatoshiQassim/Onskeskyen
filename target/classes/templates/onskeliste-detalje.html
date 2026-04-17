@@ -28,6 +28,7 @@
 </nav>
 
 <main>
+    <!-- INFO OM ØNSKELISTE -->
     <section class="box">
         <h2 th:text="${onskeliste.titel}">Ønskeliste</h2>
         <p th:text="${onskeliste.beskrivelse}">Beskrivelse</p>
@@ -38,10 +39,11 @@
         </p>
     </section>
 
+    <!-- TILFØJ ØNSKE -->
     <section class="box">
         <h2>Tilføj ønske</h2>
 
-        <form th:action="@{/onskelister/{id}/tilfoej-onske(id=${onskelisteId})}" method="post">
+        <form th:action="@{/onskelister/{id}/tilfoej-onske(id=${onskeliste.onskelisteId})}" method="post">
             <input type="text" name="navn" placeholder="Navn" required><br><br>
             <input type="text" name="beskrivelse" placeholder="Beskrivelse"><br><br>
             <input type="text" name="link" placeholder="Produkt link"><br><br>
@@ -52,6 +54,7 @@
         </form>
     </section>
 
+    <!-- ØNSKER -->
     <section class="box">
         <h2>Ønsker</h2>
 
@@ -78,17 +81,12 @@
                     <img th:src="${onske.billedeLink}" alt="Produktbillede" style="max-width: 140px; border-radius: 8px;">
                 </div>
 
+                <!-- STATUS -->
                 <span th:if="${onske.kobt}" class="status status-booked">Købt</span>
+                <span th:if="${!onske.kobt}" class="status status-free">Ledig</span>
 
-                <span th:if="${!onske.kobt and reservationer.containsKey(onske.onskeId)}" class="status status-booked">
-                    Reserveret
-                </span>
-
-                <span th:if="${!onske.kobt and !reservationer.containsKey(onske.onskeId)}" class="status status-free">
-                    Ledig
-                </span>
-
-                <form th:action="@{/onskelister/{id}/slet-onske(id=${onskelisteId})}" method="post">
+                <!-- SLET -->
+                <form th:action="@{/onskelister/{id}/slet-onske(id=${onskeliste.onskelisteId})}" method="post">
                     <input type="hidden" name="onskeId" th:value="${onske.onskeId}">
                     <button type="submit" class="nav-link-btn">Slet</button>
                 </form>

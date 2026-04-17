@@ -9,25 +9,24 @@
 <body>
 <header>
     <div class="top-bar">
-        <h1>Velkommen til Julemande </h1>
+        <h1>Velkommen til Julemande</h1>
     </div>
 </header>
 
-<nav>
-    <a href="/om-os" th:href="@{/om-os}">Om os</a>
-    <a href="/kontakt" th:href="@{/kontakt}">Kontakt</a>
+<nav class="main-nav">
+    <div class="nav-left">
+        <a href="/om-os" th:href="@{/om-os}" class="nav-link">Om os</a>
+        <a href="/kontakt" th:href="@{/kontakt}" class="nav-link">Kontakt</a>
 
-    <!-- LOGGED OUT -->
-    <a th:if="${session.brugerId == null}" href="/login" class="login-btn">
-        Login
-    </a>
+        <a th:if="${session.brugerId == null}" href="/login" class="login-btn">
+            Login
+        </a>
 
-    <!-- LOGGED IN -->
-    <a th:if="${session.brugerId != null}" href="/profil">
-        Profil
-    </a>
+        <a th:if="${session.brugerId != null}" href="/profil" class="nav-link">
+            Profil
+        </a>
+    </div>
 
-    <!-- LOGOUT -->
     <div class="nav-right">
         <form th:if="${session.brugerId != null}" action="/logout" method="post" class="logout-form">
             <button type="submit" class="nav-link-btn">Log ud</button>
