@@ -16,7 +16,21 @@
 <nav>
     <a href="/om-os" th:href="@{/om-os}">Om os</a>
     <a href="/kontakt" th:href="@{/kontakt}">Kontakt</a>
-    <a href="/login" class="login-btn" th:href="@{/login}">Login</a>
+
+    <!-- LOGGED OUT -->
+    <a th:if="${session.brugerId == null}" href="/login" class="login-btn">
+        Login
+    </a>
+
+    <!-- LOGGED IN -->
+    <a th:if="${session.brugerId != null}" href="/profil">
+        Profil
+    </a>
+
+    <!-- LOGOUT -->
+    <form th:if="${session.brugerId != null}" href="/logout" class="login-btn">
+        Log ud
+    </form>
 </nav>
 
 <main>
