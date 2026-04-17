@@ -55,17 +55,6 @@ public class OnskelisteController {
         return "onskelister";
     }
 
-    @GetMapping("/opret-onskeliste")
-    public String visOpretOnskeliste(HttpSession session) {
-        Integer brugerId = (Integer) session.getAttribute("brugerId");
-
-        if (brugerId == null) {
-            return "redirect:/login";
-        }
-
-        return "opret-onskeliste";
-    }
-
     @PostMapping("/opret-onskeliste")
     public String opretOnskeliste(@RequestParam String titel,
                                   @RequestParam(required = false) String beskrivelse,
@@ -88,7 +77,9 @@ public class OnskelisteController {
 
         onskelisteService.save(liste);
 
-        String delingslink = "http://localhost:8080/onskelister/delt/" + liste.getOnskelisteId();
+        // 🔥 HER ER DET VIGTIGE
+        String delingslink = "http://localhost:8083/onskelister/delt/" + liste.getOnskelisteId();
+
         onskelisteService.updateDelingslinkById(liste.getOnskelisteId(), delingslink);
         liste.setDelingslink(delingslink);
 
@@ -112,29 +103,15 @@ public class OnskelisteController {
         }
 
         Onskeliste liste = onskelisteService.findById(id);
-        if (liste == null) {
-            return "redirect:/onskelister";
-        }
-
-        if (liste.getBrugerId() != brugerId) {
+        if (liste == null || liste.getBrugerId() != brugerId) {
             return "redirect:/onskelister";
         }
 
         List<Onske> onsker = onskeService.hentOnskerForListe(id);
-        Map<Integer, Reservation> reservationer = new HashMap<>();
-
-        for (Onske onske : onsker) {
-            Reservation reservation = reservationService.findByOnskeId(onske.getOnskeId());
-            if (reservation != null) {
-                reservationer.put(onske.getOnskeId(), reservation);
-            }
-        }
 
         model.addAttribute("bruger", bruger);
         model.addAttribute("onskeliste", liste);
-        model.addAttribute("onskelisteId", id);
         model.addAttribute("onsker", onsker);
-        model.addAttribute("reservationer", reservationer);
 
         return "onskeliste-detalje";
     }
@@ -146,33 +123,16 @@ public class OnskelisteController {
 
         Onskeliste liste = onskelisteService.findById(id);
 
-        if (liste == null) {
-            return "redirect:/index";
-        }
-
-        if (!liste.isOffentlig()) {
+        if (liste == null || !liste.isOffentlig()) {
             return "redirect:/index";
         }
 
         List<Onske> onsker = onskeService.hentOnskerForListe(id);
-        Map<Integer, Reservation> reservationer = new HashMap<>();
-
-        for (Onske onske : onsker) {
-            Reservation reservation = reservationService.findByOnskeId(onske.getOnskeId());
-            if (reservation != null) {
-                reservationer.put(onske.getOnskeId(), reservation);
-            }
-        }
 
         Integer brugerId = (Integer) session.getAttribute("brugerId");
-        boolean erLoggetInd = brugerId != null;
-        boolean erEjer = erLoggetInd && brugerId == liste.getBrugerId();
 
         model.addAttribute("onskeliste", liste);
         model.addAttribute("onsker", onsker);
-        model.addAttribute("reservationer", reservationer);
-        model.addAttribute("erLoggetInd", erLoggetInd);
-        model.addAttribute("erEjer", erEjer);
         model.addAttribute("brugerId", brugerId);
 
         return "onskeliste-delt";
