@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil | Ønskeskyen</title>
+
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<header>
+    <div class="top-bar">
+        <h1>Hej <span th:text="${bruger.navn}">Bruger</span></h1>
+    </div>
+</header>
+
+<nav class="main-nav">
+    <div class="nav-left">
+        <a href="/" class="nav-link">Forside</a>
+        <a href="/onskeliste" class="nav-link">Min ønskeliste</a>
+        <a href="/profil" class="nav-link">Profil</a>
+        <a href="/mine-onsker" class="nav-link">Mine ønsker</a>
+        <a href="/tilfoej-onske" class="login-btn">Tilføj ønske</a>
+        <a href="/onskelister" class="nav-link">Ønskelister</a>
+    </div>
+
+    <div class="nav-right">
+        <form action="/logout" method="post" class="logout-form">
+            <button type="submit" class="nav-link-btn">Log ud</button>
+        </form>
+    </div>
+</nav>
+
+
+<main>
+    <section class="box">
+        <h2>Min profil</h2>
+        <p><strong>Navn:</strong> <span th:text="${bruger.navn}"></span></p>
+        <p><strong>Bruger Id:</strong> <span th:text="${bruger.brugerId}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${bruger.email}"></span></p>
+    </section>
+
+    <section class="box share-box">
+        <h2>Del min ønskeliste</h2>
+        <input type="text" readonly th:value="${delingsLink}">
+    </section>
+
+    <section class="box" style="grid-column: 1 / -1;">
+        <h2>Mine ønsker</h2>
+
+        <ul class="wish-list">
+            <li th:each="onske : ${onsker}"
+                th:classappend="${onske.booket} ? 'booked' : 'available'">
+
+                <span class="wish-title" th:text="${onske.navn}"></span>
+
+                <div class="wish-meta">
+                    Pris: <span th:text="${onske.pris}"></span> kr.
+                </div>
+
+                <span th:if="${!onske.booket}" class="status status-free">Ledig</span>
+                <span th:if="${onske.booket}" class="status status-booked">Booket</span>
+            </li>
+        </ul>
+
+        <p th:if="${#lists.isEmpty(onsker)}">Du har ingen ønsker endnu.</p>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Ønskeskyen</p>
+</footer>
+
+</body>
+</html>
