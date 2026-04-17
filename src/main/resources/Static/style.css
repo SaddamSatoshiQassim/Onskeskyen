@@ -2,12 +2,24 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     color: #333;
+    background-color: #f4f4f4; /* Valgfri lys baggrund bag kortet */
+}
 
+.brand-card-overlay {
+    /* Størrelse på kortet */
+    width: 300px;
+    height: 400px;
+    padding: 20px;
+    border-radius: 10px;
+
+    /* Baggrundsbillede */
     background-image: url("julemanden.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+
+    /* Gør teksten hvid så den er læsbar ovenpå billedet */
+    color: white;
 }
 
 header {
