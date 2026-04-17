@@ -4,6 +4,7 @@ CREATE DATABASE IF NOT EXISTS Onskeskyen
 
 USE Onskeskyen;
 
+
 DROP TABLE IF EXISTS reservation;
 DROP TABLE IF EXISTS ønske;
 DROP TABLE IF EXISTS ønskeliste;
