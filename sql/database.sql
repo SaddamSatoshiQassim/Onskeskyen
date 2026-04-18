@@ -1,9 +1,6 @@
-CREATE DATABASE IF NOT EXISTS Onskeskyen
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS Onskeskyen;
 
 USE Onskeskyen;
-
 
 DROP TABLE IF EXISTS reservation;
 DROP TABLE IF EXISTS ønske;
@@ -14,7 +11,7 @@ CREATE TABLE IF NOT EXISTS bruger
 (
     bruger_id      INT AUTO_INCREMENT PRIMARY KEY,
     navn           VARCHAR(100) NOT NULL,
-    email          VARCHAR(50) NOT NULL UNIQUE,
+    email          VARCHAR(255) NOT NULL UNIQUE,
     kodeord        VARCHAR(100) NOT NULL,
     oprettet_dato  DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -24,9 +21,9 @@ CREATE TABLE IF NOT EXISTS ønskeliste
     ønskeliste_id   INT AUTO_INCREMENT PRIMARY KEY,
     ejer_bruger_id  INT NOT NULL,
     titel           VARCHAR(100) NOT NULL,
-    beskrivelse     VARCHAR(100) NULL,
+    beskrivelse     TEXT NULL,
     offentlig       TINYINT(1) DEFAULT 1,
-    delingslink     VARCHAR(50) NULL,
+    delingslink     VARCHAR(1000) NULL,
     oprettet_dato   DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     INDEX idx_onskeliste_ejer_bruger_id (ejer_bruger_id),
@@ -40,11 +37,11 @@ CREATE TABLE IF NOT EXISTS ønske
 (
     ønske_id        INT AUTO_INCREMENT PRIMARY KEY,
     ønskeliste_id   INT NOT NULL,
-    navn            VARCHAR(100) NOT NULL,
-    beskrivelse     VARCHAR(100) NULL,
+    navn            VARCHAR(255) NOT NULL,
+    beskrivelse     TEXT NULL,
     pris            DECIMAL(10,2) NULL,
-    produkt_link    VARCHAR(100) NULL,
-    billede_link    VARCHAR(100) NULL,
+    produkt_link    VARCHAR(1000) NULL,
+    billede_link    VARCHAR(1000) NULL,
     købt            TINYINT(1) DEFAULT 0,
     dato            DATETIME DEFAULT CURRENT_TIMESTAMP,
 
@@ -74,4 +71,4 @@ CREATE TABLE IF NOT EXISTS reservation
             ON DELETE CASCADE
 );
 
-ALTER TABLE ønske MODIFY produkt_link VARCHAR(500);
+SELECT * FROM bruger;

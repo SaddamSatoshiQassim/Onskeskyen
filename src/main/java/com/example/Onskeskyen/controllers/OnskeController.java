@@ -2,8 +2,10 @@ package com.example.Onskeskyen.controllers;
 
 import com.example.Onskeskyen.models.Bruger;
 import com.example.Onskeskyen.models.Onske;
+import com.example.Onskeskyen.models.Reservation;
 import com.example.Onskeskyen.services.BrugerService;
 import com.example.Onskeskyen.services.OnskeService;
+import com.example.Onskeskyen.services.ReservationService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,15 +14,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 public class OnskeController {
 
     private final OnskeService onskeService;
     private final BrugerService brugerService;
+    private final ReservationService reservationService;
 
-    public OnskeController(OnskeService onskeService, BrugerService brugerService) {
+    public OnskeController(OnskeService onskeService,
+                           BrugerService brugerService,
+                           ReservationService reservationService) {
         this.onskeService = onskeService;
         this.brugerService = brugerService;
+        this.reservationService = reservationService;
     }
 
     @GetMapping("/profil")
@@ -37,8 +47,19 @@ public class OnskeController {
             return "redirect:/login";
         }
 
+        List<Onske> onsker = onskeService.hentOnsker(brugerId);
+        Map<Integer, Reservation> reservationer = new HashMap<>();
+
+        for (Onske onske : onsker) {
+            Reservation reservation = reservationService.findByOnskeId(onske.getOnskeId());
+            if (reservation != null) {
+                reservationer.put(onske.getOnskeId(), reservation);
+            }
+        }
+
         model.addAttribute("bruger", bruger);
-        model.addAttribute("onsker", onskeService.hentOnsker(brugerId));
+        model.addAttribute("onsker", onsker);
+        model.addAttribute("reservationer", reservationer);
 
         return "profil";
     }

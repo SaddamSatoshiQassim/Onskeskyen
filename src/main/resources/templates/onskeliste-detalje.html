@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ønskeliste</title>
-    <link rel="stylesheet" th:href="@{/Style-detalje.css}">
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
 
@@ -44,9 +44,9 @@
         <form th:action="@{/onskelister/{id}/tilfoej-onske(id=${onskeliste.onskelisteId})}" method="post" class="wish-form">
             <input type="text" name="navn" placeholder="Navn" required class="form-input">
             <input type="text" name="beskrivelse" placeholder="Beskrivelse" class="form-input">
-            <input type="text" name="produktLink" placeholder="Produkt link" class="form-input">
+            <input type="text" name="link" placeholder="Produkt link" class="form-input">
             <input type="number" step="0.01" name="pris" placeholder="Pris" class="form-input">
-            <input type="text" name="billedeLink" placeholder="Billede link" class="form-input">
+            <input type="text" name="billede" placeholder="Billede link" class="form-input">
 
             <button type="submit" class="action-btn green-btn">Tilføj</button>
         </form>
@@ -78,8 +78,17 @@
                     <img th:src="${onske.billedeLink}" alt="Produktbillede" class="product-image">
                 </div>
 
-                <span th:if="${onske.kobt}" class="status status-booked">Købt</span>
-                <span th:if="${!onske.kobt}" class="status status-free">Ledig</span>
+                <div>
+                    <span th:if="${onske.kobt}" class="status status-booked">Købt</span>
+
+                    <span th:if="${!onske.kobt and reservationer.containsKey(onske.onskeId)}" class="status status-booked">
+                        Reserveret
+                    </span>
+
+                    <span th:if="${!onske.kobt and !reservationer.containsKey(onske.onskeId)}" class="status status-free">
+                        Ledig
+                    </span>
+                </div>
 
                 <div class="action-row">
                     <form th:action="@{/onsker/{id}/slet(id=${onske.onskeId})}" method="post" class="inline-form">

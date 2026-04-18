@@ -41,7 +41,7 @@
         <p th:if="${#lists.isEmpty(onsker)}">Du har ingen ønsker endnu.</p>
 
         <ul class="wish-list" th:if="${!#lists.isEmpty(onsker)}">
-            <li th:each="onske : ${onsker}" th:class="${onske.kobt} ? 'booked' : 'available'">
+            <li th:each="onske : ${onsker}" th:class="${onske.kobt ? 'booked' : 'available'}">
 
                 <span class="wish-title" th:text="${onske.navn}">Navn</span>
 
@@ -61,8 +61,17 @@
                     <img th:src="${onske.billedeLink}" alt="Produktbillede" class="product-image">
                 </div>
 
-                <span th:if="${onske.kobt}" class="status status-booked">Købt</span>
-                <span th:if="${!onske.kobt}" class="status status-active">Aktiv</span>
+                <div>
+                    <span th:if="${onske.kobt}" class="status status-booked">Købt</span>
+
+                    <span th:if="${!onske.kobt and reservationer.containsKey(onske.onskeId)}" class="status status-booked">
+                        Reserveret
+                    </span>
+
+                    <span th:if="${!onske.kobt and !reservationer.containsKey(onske.onskeId)}" class="status status-active">
+                        Aktiv
+                    </span>
+                </div>
             </li>
         </ul>
     </section>
