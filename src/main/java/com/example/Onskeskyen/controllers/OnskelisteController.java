@@ -1,5 +1,5 @@
 package com.example.Onskeskyen.controllers;
-
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.example.Onskeskyen.models.Bruger;
 import com.example.Onskeskyen.models.Onske;
 import com.example.Onskeskyen.models.Onskeliste;
@@ -88,7 +88,12 @@ public class OnskelisteController {
 
         onskelisteService.save(liste);
 
-        String delingslink = "http://localhost:8083/onskelister/delt/" + liste.getOnskelisteId();
+        String delingslink = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/onskelister/delt/{id}")
+                .buildAndExpand(liste.getOnskelisteId())
+                .toUriString();
+
         onskelisteService.updateDelingslinkById(liste.getOnskelisteId(), delingslink);
         liste.setDelingslink(delingslink);
 
